@@ -1,23 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Forms from "./components/Form/Form";
+import { useEffect, useState } from "react";
+import TableUi from "./components/TableUi/TableUi";
 
 function App() {
+  const [arrayOfData, setArrayOfData] = useState([]);
+
+  const onChnagesArray = (data) => {
+    console.log(data);
+    let da = [...arrayOfData, data];
+    setArrayOfData((prevArray) => {
+      // Use functional update to access the previous state
+      // and safely append the new data to it
+      return [...prevArray, data];
+    });
+    // localStorage.setItem(
+    //   "data",
+    //   JSON.stringify([...arrayOfData, { ...data, time: new Date() }])
+    // );
+  };
+
+  // useEffect(() => {
+  //   localStorage.setItem("data", JSON.stringify(arrayOfData));
+  // }, [arrayOfData]);
+
+  useEffect(() => {
+    let d = localStorage.getItem("data");
+    console.log(d);
+    // d = JSON.parse(d);
+    setArrayOfData(d);
+  }, []);
+
+  // console.log(arrayOfData);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Forms onChnagesArray={onChnagesArray} />
+      <TableUi arrayOfData={arrayOfData} />
     </div>
   );
 }
